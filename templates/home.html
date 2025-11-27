@@ -1,32 +1,38 @@
 {% extends 'layout.html' %}
 {% block body %}
-<h2>Home - Jadwalkan Live</h2>
-
-<form method="POST" action="{{ url_for('schedule') }}">
-  <div class="card p-3">
-    <label>Judul Video</label>
-    <input type="text" name="title" class="form-control">
-
-    <label class="mt-2">Tanggal & Jam</label>
-    <input type="datetime-local" name="datetime" class="form-control">
-
-    <label class="mt-2">Stream Key</label>
-    <input type="text" name="stream_key" class="form-control">
-
-    <label class="mt-2">RTMP URL</label>
-    <input type="text" name="rtmp" value="rtmp://a.rtmp.youtube.com/live2" class="form-control">
-
-    <label class="mt-2">Durasi (Menit)</label>
-    <input type="number" name="duration" class="form-control" value="30">
-
-    <label class="mt-2">Pilih File</label>
-    <select name="file_path" class="form-select">
-      {% for f in files %}
-      <option value="{{ f.public_url }}">{{ f.name }}</option>
-      {% endfor %}
-    </select>
-
-    <button class="btn btn-success mt-3">Jadwalkan</button>
+<h2>Home - Buat Jadwal Live</h2>
+<div class="card p-3 mb-3">
+<form method="post" action="{{ url_for('schedule_create') }}">
+  <div class="row">
+    <div class="col-md-8"><label>Judul</label><input class="form-control" name="title" required></div>
+    <div class="col-md-4"><label>Visibility</label><select class="form-control" name="visibility"><option>Public</option><option>Unlisted</option><option>Private</option></select></div>
   </div>
+  <div class="mt-3"><label>Deskripsi</label><textarea class="form-control" name="description"></textarea></div>
+  <div class="row mt-3">
+    <div class="col-md-6"><label>Tanggal & Jam (ISO)</label><input class="form-control" type="datetime-local" name="scheduled_at" id="scheduled_at" required></div>
+    <div class="col-md-6"><label>Stream Key</label><input class="form-control" name="stream_key"></div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-6"><label>RTMP URL</label><input class="form-control" name="rtmp_url" value="rtmp://a.rtmp.youtube.com/live2"></div>
+    <div class="col-md-3"><label>Durasi (Menit)</label><input class="form-control" name="duration" value="30"></div>
+    <div class="col-md-3"><label>Looping</label><select class="form-control" name="looping"><option value="0">Tidak</option><option value="1">Ya</option></select></div>
+  </div>
+  
+<div class="mt-3">
+    
+
+<label>Pilih File dari Storage</label>
+<select class="form-control" name="selected_file" required>
+    <option value="">-- Pilih File --</option>
+    {% for f in files %}
+        <option value="{{ f.url }}">{{ f.name }}</option>
+    {% endfor %}
+</select>
+
+
+</div>
+
+  <div class="mt-3 text-end"><button class="btn btn-success">Jadwalkan Live</button></div>
 </form>
+</div>
 {% endblock %}
