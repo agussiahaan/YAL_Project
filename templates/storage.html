@@ -1,0 +1,46 @@
+
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<h2>Storage</h2>
+
+<div class="card p-3 mb-3">
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <label>Upload file lokal (akan dikirim ke Supabase)</label>
+        <input type="file" name="file" class="form-control" required>
+        <button class="btn btn-primary mt-3">Upload</button>
+    </form>
+</div>
+
+<h4 class="mt-4">Daftar File</h4>
+
+{% if files and files|length > 0 %}
+<table class="table table-bordered mt-2">
+    <thead>
+        <tr>
+            <th>Nama File</th>
+            <th>Ukuran</th>
+            <th>Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in files %}
+        <tr>
+            <td>{{ f.name }}</td>
+            <td>{{ f.size }} bytes</td>
+            <td>
+                <a href="{{ f.url }}" target="_blank">Buka</a>
+                |
+                <button class="btn btn-sm btn-secondary"
+                        onclick="navigator.clipboard.writeText('{{ f.url }}')">Copy</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-muted">Belum ada file di Supabase.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block body %}
+<h2>Daftar Jadwal Live</h2>
+
+{% if schedules %}
+<table class="table table-bordered mt-3">
+  <thead>
+    <tr>
+      <th>Judul</th>
+      <th>Tanggal & Waktu</th>
+      <th>Status</th>
+      <th>Durasi</th>
+      <th>File</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in schedules %}
+    <tr>
+      <td>{{ s.title }}</td>
+      <td>{{ s.scheduled_at }}</td>
+      <td>{{ s.status }}</td>
+      <td>{{ s.duration_minutes }} menit</td>
+      <td><a href="{{ s.file_url }}" target="_blank">Lihat File</a></td>
+      <td>
+        <a href="{{ url_for('delete_schedule_route', id=s.id) }}" class="btn btn-danger btn-sm">Hapus</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="alert alert-info mt-3">Belum ada jadwal.</div>
+{% endif %}
+{% endblock %}

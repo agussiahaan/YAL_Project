@@ -1,0 +1,1 @@
+print('minimal app placeholder')
